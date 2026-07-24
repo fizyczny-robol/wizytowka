@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIZOL — Fizyczny Robol | Skarżysko-Kamienna i okolice</title>
+<meta name="description" content="FIZOL — prosty chłop do prostej roboty. Ogród, sprzątanie, drobne naprawy, transport. Do 40 km od Skarżyska-Kamiennej.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black: #0a0a0a;
+    --black-2: #141414;
+    --card: #181b16;
+    --green: #7bc142;
+    --green-dark: #4c7a1f;
+    --green-deep: #2e4a13;
+    --white: #f5f6f2;
+    --line: #2a2e26;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--black);
+    color:var(--white);
+    font-family:'Inter', sans-serif;
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{
+    font-family:'Archivo Black', 'Oswald', sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    line-height:1.05;
+  }
+  .eyebrow{
+    font-family:'Oswald', sans-serif;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:3px;
+    font-size:0.78rem;
+    color:var(--green);
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{
+    max-width:1140px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Oswald', sans-serif;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    font-size:0.95rem;
+    padding:15px 30px;
+    border-radius:4px;
+    border:2px solid transparent;
+    cursor:pointer;
+    transition:transform .15s ease, background .2s ease, border-color .2s ease;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn:focus-visible{outline:3px solid var(--green); outline-offset:2px;}
+  .btn-solid{background:var(--green); color:#0a0a0a;}
+  .btn-solid:hover{background:#8fd158;}
+  .btn-outline{border-color:var(--green); color:var(--white);}
+  .btn-outline:hover{background:var(--green); color:#0a0a0a;}
+
+  /* ===== HEADER ===== */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(10,10,10,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 24px;
+  }
+  .logo{
+    font-family:'Archivo Black', sans-serif;
+    font-size:1.4rem;
+    letter-spacing:1px;
+  }
+  .logo span{color:var(--green);}
+  .nav-links{display:flex; gap:28px; font-family:'Oswald',sans-serif; font-weight:500; text-transform:uppercase; font-size:0.85rem; letter-spacing:1px;}
+  .nav-links a{opacity:.85; transition:opacity .2s, color .2s;}
+  .nav-links a:hover{opacity:1; color:var(--green);}
+  .nav-phone{
+    display:flex; align-items:center; gap:8px;
+    font-family:'Oswald',sans-serif; font-weight:600; font-size:1rem;
+    border:2px solid var(--green); color:var(--white);
+    padding:8px 16px; border-radius:4px;
+    white-space:nowrap;
+  }
+  .nav-phone:hover{background:var(--green); color:#0a0a0a;}
+  .burger{display:none;}
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;
+    padding:90px 0 70px;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 85% -10%, rgba(123,193,66,0.18), transparent 55%),
+      repeating-linear-gradient(135deg, #0d0f0b 0px, #0d0f0b 40px, #101208 40px, #101208 80px);
+    border-bottom:6px solid var(--green);
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap:40px;
+    align-items:center;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 6vw, 4.4rem);
+    color:var(--white);
+  }
+  .hero h1 .accent{color:var(--green);}
+  .hero-sub{
+    font-family:'Oswald', sans-serif;
+    font-size:1.15rem;
+    color:#c9cbc3;
+    margin:18px 0 30px;
+    max-width:480px;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+  }
+  .hero-cta{display:flex; flex-wrap:wrap; gap:16px;}
+  .hero-badges{
+    display:flex; gap:18px; margin-top:34px; flex-wrap:wrap;
+  }
+  .hero-badge{
+    font-family:'Oswald',sans-serif; font-size:0.8rem; letter-spacing:1px;
+    text-transform:uppercase; color:#a9ac9f;
+    display:flex; align-items:center; gap:8px;
+  }
+  .hero-badge svg{flex-shrink:0;}
+  .hero-visual{
+    position:relative;
+    aspect-ratio:1/1;
+    border-radius:50%;
+    background: radial-gradient(circle at 40% 30%, #1c2116 0%, #0a0a0a 70%);
+    border:3px solid var(--green-dark);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .hero-visual::before{
+    content:"";
+    position:absolute; inset:14px;
+    border-radius:50%;
+    border:2px dashed rgba(123,193,66,0.35);
+  }
+  .hero-visual svg{width:62%; height:62%;}
+
+  /* ===== SECTION LABELS ===== */
+  section{padding:80px 0;}
+  .section-head{max-width:640px; margin-bottom:48px;}
+  .section-head h2{font-size:clamp(1.8rem, 4vw, 2.6rem); margin-top:10px;}
+  .section-head p{color:#b7b9b0; margin-top:14px; font-size:1.05rem;}
+
+  /* ===== SERVICES ===== */
+  .services{background:var(--black-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .service-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:2px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .service-card{
+    background:var(--card);
+    padding:34px 24px;
+    display:flex; flex-direction:column; gap:16px;
+    transition:background .2s ease;
+  }
+  .service-card:hover{background:#1f2419;}
+  .service-icon{
+    width:52px; height:52px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--green-deep);
+    border-radius:8px;
+  }
+  .service-icon svg{width:28px; height:28px; stroke:var(--green);}
+  .service-card h3{font-family:'Oswald',sans-serif; font-weight:600; text-transform:none; font-size:1.08rem; letter-spacing:0; color:var(--white);}
+  .service-card p{font-size:0.92rem; color:#a2a59a;}
+
+  /* ===== O MNIE / DLACZEGO ===== */
+  .why{
+    display:grid;
+    grid-template-columns:0.9fr 1.1fr;
+    gap:60px;
+    align-items:center;
+  }
+  .why-visual{
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:36px;
+    background:linear-gradient(160deg, #12150f, #0a0a0a);
+  }
+  .why-visual svg{width:100%; height:auto;}
+  .why-list{list-style:none; display:flex; flex-direction:column; gap:22px; margin-top:26px;}
+  .why-list li{display:flex; gap:16px; align-items:flex-start;}
+  .why-num{
+    font-family:'Archivo Black', sans-serif;
+    color:var(--green);
+    font-size:1.1rem;
+    border:2px solid var(--green-dark);
+    border-radius:50%;
+    width:38px; height:38px;
+    flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .why-list h3{font-family:'Oswald',sans-serif; text-transform:none; font-weight:600; font-size:1.05rem; color:var(--white);}
+  .why-list p{font-size:0.92rem; color:#a2a59a; margin-top:4px;}
+
+  /* ===== ZASIĘG / MAPA ===== */
+  .area{
+    background:var(--black-2);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .area-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:50px;
+    align-items:center;
+  }
+  .radar{
+    position:relative;
+    aspect-ratio:1/1;
+    max-width:420px;
+    margin:0 auto;
+  }
+  .radar svg{width:100%; height:100%;}
+  .town-list{
+    display:flex; flex-wrap:wrap; gap:10px; margin-top:24px;
+  }
+  .town-chip{
+    font-family:'Oswald',sans-serif; font-size:0.85rem; letter-spacing:0.5px;
+    padding:8px 16px; border:1px solid var(--line); border-radius:999px;
+    color:#c9cbc3;
+  }
+  .town-chip.center{border-color:var(--green); color:var(--green); font-weight:600;}
+
+  /* ===== KONTAKT ===== */
+  .contact{
+    position:relative;
+    background:
+      radial-gradient(circle at 10% 10%, rgba(123,193,66,0.15), transparent 45%),
+      #0a0a0a;
+    border-bottom:6px solid var(--green);
+  }
+  .contact-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:50px;
+  }
+  .contact-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:40px;
+  }
+  .contact-row{
+    display:flex; align-items:center; gap:16px;
+    padding:16px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .contact-row:last-child{border-bottom:none;}
+  .contact-row .ic{
+    width:42px; height:42px; border-radius:8px;
+    background:var(--green-deep);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .contact-row .ic svg{width:22px; height:22px; stroke:var(--green);}
+  .contact-row .label{font-family:'Oswald',sans-serif; font-size:0.75rem; text-transform:uppercase; letter-spacing:1.5px; color:#8a8d82;}
+  .contact-row .value{font-size:1.05rem; font-weight:600; color:var(--white);}
+  .contact-row .value a:hover{color:var(--green);}
+  .social-row{display:flex; gap:14px; margin-top:26px;}
+  .social-btn{
+    width:44px; height:44px; border-radius:8px;
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    transition:border-color .2s, background .2s;
+  }
+  .social-btn:hover{border-color:var(--green); background:var(--green-deep);}
+  .social-btn svg{width:20px; height:20px; stroke:var(--green);}
+
+  .hours-list{list-style:none; display:flex; flex-direction:column; gap:12px;}
+  .hours-list li{display:flex; justify-content:space-between; font-size:0.95rem; padding:10px 0; border-bottom:1px dashed var(--line);}
+  .hours-list li:last-child{border-bottom:none;}
+  .hours-list span:first-child{color:#a2a59a; font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:0.5px; font-size:0.82rem;}
+  .hours-list span:last-child{font-weight:600;}
+
+  /* ===== FOOTER ===== */
+  footer{
+    padding:36px 0;
+    text-align:center;
+  }
+  footer p{font-size:0.82rem; color:#6c6f64;}
+  footer .foot-logo{font-family:'Archivo Black', sans-serif; color:var(--green); letter-spacing:1px; margin-bottom:8px; font-size:1rem;}
+
+  .placeholder{color:#e0a04a; font-style:normal;}
+
+  @media (max-width: 860px){
+    .nav-links{display:none;}
+    .hero-grid, .why, .area-grid, .contact-grid{grid-template-columns:1fr;}
+    .hero-visual{max-width:280px; margin:0 auto;}
+    .service-grid{grid-template-columns:repeat(2,1fr);}
+    .why-visual{order:-1;}
+  }
+  @media (max-width: 480px){
+    .service-grid{grid-template-columns:1fr;}
+    .nav-phone span.txt{display:none;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .btn{transition:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav wrap">
+    <div class="logo">FIZ<span>OL</span></div>
+    <nav class="nav-links">
+      <a href="#uslugi">Usługi</a>
+      <a href="#dlaczego">Dlaczego ja</a>
+      <a href="#zasieg">Zasięg</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+    <a class="nav-phone" href="tel:511511387">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      <span class="txt">511 511 387</span>
+    </a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Fizyczny Robol · Skarżysko-Kamienna</p>
+      <h1>Prosty chłop <span class="accent">do prostej roboty</span></h1>
+      <p class="hero-sub">Ogród, sprzątanie, drobne naprawy i transport — solidnie, na czas i bez zbędnego gadania.</p>
+      <div class="hero-cta">
+        <a class="btn btn-solid" href="tel:511511387">Zadzwoń: 511 511 387</a>
+        <a class="btn btn-outline" href="#uslugi">Zobacz usługi</a>
+      </div>
+      <div class="hero-badges">
+        <span class="hero-badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7bc142" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Szybki kontakt
+        </span>
+        <span class="hero-badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7bc142" stroke-width="2"><path d="M12 2 3 7v6c0 5 4 9 9 9s9-4 9-9V7z"/></svg>
+          Uczciwa wycena
+        </span>
+        <span class="hero-badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7bc142" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V9l9-6 9 6v10a2 2 0 0 1-2 2h-4"/><path d="M9 21v-6h6v6"/></svg>
+          Dojazd do 40 km
+        </span>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <svg viewBox="0 0 200 200" fill="none">
+        <circle cx="100" cy="100" r="70" stroke="#4c7a1f" stroke-width="2" stroke-dasharray="6 6"/>
+        <path d="M60 130 L60 70 L100 40 L140 70 L140 130 Z" stroke="#7bc142" stroke-width="4" stroke-linejoin="round"/>
+        <rect x="85" y="95" width="30" height="35" stroke="#f5f6f2" stroke-width="3"/>
+        <path d="M60 70 L100 100 L140 70" stroke="#f5f6f2" stroke-width="3"/>
+        <circle cx="100" cy="55" r="8" fill="#7bc142"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="services" id="uslugi">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Co robię</p>
+      <h2>Od trawnika po transport</h2>
+      <p>Jeden telefon — jeden fachowiec do wielu spraw. Poniżej pełen zakres usług.</p>
+    </div>
+  </div>
+  <div class="wrap" style="padding:0;">
+  <div class="service-grid">
+
+    <div class="service-card">
+      <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="12" height="8" rx="1"/><circle cx="6" cy="19" r="2"/><circle cx="13" cy="19" r="2"/><path d="M15 10h5l2 4v2h-2"/></svg></div>
+      <h3>Koszenie trawy</h3>
+      <p>Regularne lub jednorazowe koszenie działek, ogrodów i posesji.</p>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6"/><path d="M12 22v-8"/><path d="M4 12H2"/><path d="M8 8 6 6"/><path d="M16 8l2-2"/><circle cx="12" cy="12" r="4"/></svg></div>
+      <h3>Prace ogrodowe</h3>
+      <p>Grabienie, przycinanie, sadzenie, porządkowanie terenu zielonego.</p>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l18 18"/><rect x="6" y="12" width="9" height="9" rx="1"/><path d="M9 6l6 6"/></svg></div>
+      <h3>Malowanie</h3>
+      <p>Malowanie ścian, ogrodzeń, elewacji i pomieszczeń gospodarczych.</p>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 3.5 3 15l1.5 5.5L10 19l11.5-11.5z"/><path d="M14.5 3.5 17 6"/></svg></div>
+      <h3>Drobne naprawy</h3>
+      <p>Montaż, wiercenie, mocowanie, drobne usterki domowe.</p>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1.5"/><circle cx="16" cy="20" r="1.5"/><path d="M2 4h3l2.4 12h9.2L19 8H6"/></svg></div>
+      <h3>Sprzątanie</h3>
+      <p>Sprzątanie posesji, garaży, piwnic i pomieszczeń po remoncie.</p>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="8" width="14" height="9" rx="1"/><path d="M15 11h4l3 3v3h-7"/><circle cx="6" cy="19" r="1.6"/><circle cx="17.5" cy="19" r="1.6"/></svg></div>
+      <h3>Transport i przeprowadzki</h3>
+      <p>Przewóz mebli, sprzętu i drobnych ładunków busem.</p>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14"/></svg></div>
+      <h3>Wywóz odpadów</h3>
+      <p>Wywóz gruzu, gałęzi i odpadów poremontowych z posesji.</p>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v14H4z"/><path d="M4 18l6-6" /><path d="M14 18l6-8"/></svg></div>
+      <h3>Prace zlecone</h3>
+      <p>Nie widzisz swojej sprawy na liście? Zadzwoń — pogadamy.</p>
+    </div>
+
+  </div>
+  </div>
+</section>
+
+<section class="why" id="dlaczego">
+  <div class="wrap why">
+    <div class="why-visual">
+      <svg viewBox="0 0 300 300" fill="none">
+        <circle cx="150" cy="150" r="130" stroke="#2a2e26" stroke-width="1"/>
+        <circle cx="150" cy="150" r="95" stroke="#4c7a1f" stroke-width="1.5" stroke-dasharray="4 6"/>
+        <g stroke="#7bc142" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M110 190 L110 140 L150 115 L190 140 L190 190"/>
+          <path d="M100 190 L200 190"/>
+        </g>
+        <circle cx="150" cy="95" r="10" fill="#f5f6f2"/>
+        <path d="M150 105 v25" stroke="#f5f6f2" stroke-width="3"/>
+      </svg>
+    </div>
+    <div>
+      <p class="eyebrow">Dlaczego FIZOL</p>
+      <h2>Fachowiec od wszystkiego, słowny i na miejscu</h2>
+      <ul class="why-list">
+        <li>
+          <span class="why-num">1</span>
+          <div>
+            <h3>Jeden kontakt, wiele rąk do pracy</h3>
+            <p>Nie musisz szukać osobno ogrodnika, malarza i transportu — załatwiam to sam.</p>
+          </div>
+        </li>
+        <li>
+          <span class="why-num">2</span>
+          <div>
+            <h3>Własny sprzęt</h3>
+            <p>Kosiarka, odkurzacz przemysłowy, elektronarzędzia i bus — przyjeżdżam gotowy do roboty.</p>
+          </div>
+        </li>
+        <li>
+          <span class="why-num">3</span>
+          <div>
+            <h3>Jasne zasady</h3>
+            <p>Wycena przed rozpoczęciem pracy, bez ukrytych kosztów i niedomówień.</p>
+          </div>
+        </li>
+        <li>
+          <span class="why-num">4</span>
+          <div>
+            <h3>Elastyczny termin</h3>
+            <p>Prace jednorazowe i stałe zlecenia — dopasowuję się do Twojego kalendarza.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="area" id="zasieg">
+  <div class="wrap area-grid">
+    <div>
+      <p class="eyebrow">Obszar działania</p>
+      <h2>Do 40 km od Skarżyska-Kamiennej</h2>
+      <p style="color:#b7b9b0; margin-top:14px; font-size:1.05rem;">Dojeżdżam na miejsce w promieniu ok. 40 kilometrów. Poniżej przykładowe miejscowości w zasięgu — jeśli Twojej nie ma na liście, i tak zadzwoń, na pewno się dogadamy.</p>
+      <div class="town-list">
+        <span class="town-chip center">Skarżysko-Kamienna</span>
+        <span class="town-chip">Suchedniów</span>
+        <span class="town-chip">Wąchock</span>
+        <span class="town-chip">Starachowice</span>
+        <span class="town-chip">Bliżyn</span>
+        <span class="town-chip">Końskie</span>
+        <span class="town-chip">Stąporków</span>
+        <span class="town-chip">Szydłowiec</span>
+        <span class="town-chip">Skarżysko Kościelne</span>
+        <span class="town-chip">Mirzec</span>
+        <span class="town-chip">i okolice</span>
+      </div>
+    </div>
+    <div class="radar">
+      <svg viewBox="0 0 300 300" fill="none">
+        <circle cx="150" cy="150" r="140" stroke="#2a2e26" stroke-width="1"/>
+        <circle cx="150" cy="150" r="105" stroke="#2a2e26" stroke-width="1"/>
+        <circle cx="150" cy="150" r="70" stroke="#2a2e26" stroke-width="1"/>
+        <circle cx="150" cy="150" r="35" stroke="#4c7a1f" stroke-width="1.5"/>
+        <line x1="150" y1="10" x2="150" y2="290" stroke="#1f231b" stroke-width="1"/>
+        <line x1="10" y1="150" x2="290" y2="150" stroke="#1f231b" stroke-width="1"/>
+        <circle cx="150" cy="150" r="140" stroke="#7bc142" stroke-width="2.5"/>
+        <circle cx="150" cy="150" r="9" fill="#7bc142"/>
+        <circle cx="205" cy="105" r="4" fill="#f5f6f2"/>
+        <circle cx="95" cy="120" r="4" fill="#f5f6f2"/>
+        <circle cx="120" cy="215" r="4" fill="#f5f6f2"/>
+        <circle cx="215" cy="200" r="4" fill="#f5f6f2"/>
+        <circle cx="80" cy="205" r="4" fill="#f5f6f2"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="kontakt">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Kontakt</p>
+      <h2>Umów prostą robotę</h2>
+      <p>Zadzwoń, napisz albo odezwij się na Facebooku — odpiszę tak szybko, jak to możliwe.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-row">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div>
+            <div class="label">Telefon</div>
+            <div class="value"><a href="tel:511511387">511 511 387</a></div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg></div>
+          <div>
+            <div class="label">E-mail</div>
+            <div class="value"><a href="mailto:fizol.fizycznyrobol@gmail.com" class="placeholder">&lt;fizol.fizycznyrobol@gmail.com&gt;</a></div>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V9l9-6 9 6v10a2 2 0 0 1-2 2h-4"/><path d="M9 21v-6h6v6"/></svg></div>
+          <div>
+            <div class="label">Obszar działania</div>
+            <div class="value">Skarżysko-Kamienna + 40 km</div>
+          </div>
+        </div>
+        <div class="social-row">
+          <a class="social-btn" href="https://www.facebook.com/profile.php?id=61592258046611" aria-label="Facebook" title="Facebook: Fizol-fizycznyrobol">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="contact-card">
+        <p class="eyebrow" style="margin-bottom:14px;">Godziny dostępności</p>
+        <ul class="hours-list">
+          <li><span>Poniedziałek – Piątek</span><span><span class="placeholder">&lt;06:00-20:00&gt;</span></span></li>
+          <li><span>Sobota</span><span><span class="placeholder">&lt;08:00-16:00&gt;</span></span></li>
+          <li><span>Niedziela</span><span><span class="placeholder">&lt;niedostępny&gt;</span></span></li>
+        </ul>
+        <a class="btn btn-solid" style="margin-top:28px; width:100%; justify-content:center;" href="tel:511511387">Zadzwoń teraz</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-logo">FIZOL — Fizyczny Robol</div>
+    <p>© 2026 FIZOL · Skarżysko-Kamienna i okolice · Prosty chłop do prostej roboty</p>
+  </div>
+</footer>
+
+</body>
+</html>
